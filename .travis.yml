@@ -10,7 +10,7 @@ script:
 
 deploy:
   provider: releases
-  api_key: "$GITHUB_OAUTH_TOKEN"
+  api_key: "GITHUB OAUTH TOKEN"
   file: bin/check_consul_service
   skip_cleanup: true
   on:
