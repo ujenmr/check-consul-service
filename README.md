@@ -1,5 +1,4 @@
-Check Consul Service
-====================
+# Check Consul Service [![Build Status](https://travis-ci.org/ujenmr/check-consul-service.svg?branch=master)](https://travis-ci.org/ujenmr/check-consul-service)
 
 Nagios/Icinga plugin checks consul alive services
 
