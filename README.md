@@ -32,10 +32,10 @@ object CheckCommand "consul-service" {
       description = "Consul Scheme (http/https)"
     }
     "-w" = {
-      value = "$warning"
+      value = "$warning$"
     }
     "-c" = {
-      value = "$critical"
+      value = "$critical$"
     }
   }
 
