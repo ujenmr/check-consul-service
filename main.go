@@ -26,13 +26,13 @@
     	Consul Auth User
   -w int
     	Warning (default 1)
- */
+*/
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"flag"
 
 	api "github.com/hashicorp/consul/api"
 )
@@ -88,7 +88,7 @@ func printNagiosOut(msg string, code int) {
 func init() {
 	flag.StringVar(&consulAddr, "consul-addr", "127.0.0.1:8500", "Consul Address")
 	flag.StringVar(&consulUser, "user", "", "Consul Auth User")
-	flag.StringVar(&consulPass, "password",  "", "Consul Auth Password")
+	flag.StringVar(&consulPass, "password", "", "Consul Auth Password")
 	flag.StringVar(&consulScheme, "scheme", "http", "Consul Scheme")
 	flag.IntVar(&warningLimit, "w", 1, "Warning")
 	flag.IntVar(&criticalLimit, "c", 0, "Critical")
@@ -113,7 +113,7 @@ func main() {
 	}
 
 	catalog := client.Catalog()
-  	services, _, err := catalog.Services(nil)
+	services, _, err := catalog.Services(nil)
 
 	if err != nil {
 		printNagiosOut(err.Error(), CODE_UNKNOWN)
