@@ -1,14 +1,18 @@
 sudo: required
 language: go
 dist: trusty
+
 go:
-- master
+  - master
+
 script:
-- go build -o bin/check_consul_service main.go
+  - go build -o bin/check_consul_service main.go
+
 deploy:
   provider: releases
   api_key:
     secure: g43my9yBhW4fOnKYlw39lKZ+Xgz8NbYES09tmRoOJ7HtfTTrZNVQSZmjiXeVdNaZhDJE5rJyCCUT0qfKI0cZEcbkmRbcvr2MM8ZGlcn73l0wp5+sJ4PGVSpE4KPm77YG4l0xZvYkPXsWZIWsy1SPMOuBV6IKnKXM0WwUHOoN2zMEiFZrFBJNylruBivTH0N/wTlG4bEkiZD0233F85oloq5K/FXPy7G5oeNJ2ByGr8x3qbscPYSL7Sowdjm4oMmdjiMBSn1nNkH4JKJka3MFthNcsgifuIEOSk3E+figWjxh+Tuyn3Xwc4hrQiJuFr/D1LocuwMwt8Yz81C6dTSLjSaHV+ZwPbSOWb6p22BDXd1QkEmQixfgSLL1dJJYEWvXEnqjScMCGFUWuvgHGrNK9sCAy02AbuKh9/+QxYXmDz+6F+ZTYBtpX7A8r/0f+ytFmE60CzTjE6+R4V9nveMkRBJyvyAoAo+ANWDQrQtsQML+1TGtpc3p8UWwll8OYf3Oo64G9eM9UgEpMd1t2zmgsX9X27jpJvenxKY9nqyA1Bn8v6caE4k16UYWA04MtWXRWkB5l8xd/vwXRxcT5fhRfP3ukWsOHEIO4nz/xmWjxrtSdpvJfShZzpEfvKBZJz2cG2t5JnvieBYB4krxbBNdNFk+FvkFvpyC//fBetc2Cqc=
   file: bin/check_consul_service
+  skip_cleanup: true
   on:
-    repo: ujenmr/check-consul-service
+    tags: true
