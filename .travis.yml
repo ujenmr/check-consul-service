@@ -1,0 +1,17 @@
+sudo: required
+language: go
+dist: trusty
+
+go:
+  - master
+
+script:
+  - go build -o bin/check_consul_service main.go
+
+deploy:
+  provider: releases
+  api_key: "$GITHUB_OAUTH_TOKEN"
+  file: bin/check_consul_service
+  skip_cleanup: true
+  on:
+    tags: true
