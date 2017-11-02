@@ -33,6 +33,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	api "github.com/hashicorp/consul/api"
 )
@@ -48,6 +49,7 @@ var consulPass string
 var consulScheme string
 var warningLimit int
 var criticalLimit int
+var serv string
 
 func printNagiosOut(msg string, code int) {
 
@@ -92,6 +94,7 @@ func init() {
 	flag.StringVar(&consulScheme, "scheme", "http", "Consul Scheme")
 	flag.IntVar(&warningLimit, "w", 1, "Warning")
 	flag.IntVar(&criticalLimit, "c", 0, "Critical")
+	flag.StringVar(&serv, "services", "", "Monitor services")
 	flag.Parse()
 	if warningLimit < criticalLimit {
 		printNagiosOut("Warning value must be less then critical", CODE_UNKNOWN)
@@ -99,21 +102,21 @@ func init() {
 }
 
 func main() {
-	config := api.DefaultConfig()
-	config.Address = consulAddr
+	cfg := api.DefaultConfig()
+	cfg.Address = consulAddr
 	if consulUser != "" && consulPass != "" {
-		config.HttpAuth = &api.HttpBasicAuth{Username: consulUser, Password: consulPass}
+		cfg.HttpAuth = &api.HttpBasicAuth{Username: consulUser, Password: consulPass}
 	}
 	if consulScheme != "http" {
-		config.Scheme = consulScheme
+		cfg.Scheme = consulScheme
 	}
-	client, err := api.NewClient(config)
+	cli, err := api.NewClient(cfg)
 	if err != nil {
 		printNagiosOut(err.Error(), CODE_UNKNOWN)
 	}
 
-	catalog := client.Catalog()
-	services, _, err := catalog.Services(nil)
+	cat := cli.Catalog()
+	catServ, _, err := cat.Services(nil)
 
 	if err != nil {
 		printNagiosOut(err.Error(), CODE_UNKNOWN)
@@ -121,19 +124,29 @@ func main() {
 
 	var s string
 	exitCode := CODE_OK
-	for name, _ := range services {
-		svcDesc, _, err := catalog.Service(name, "", nil)
+	var monServ []string
+
+	if serv == "" {
+		for name, _ := range catServ {
+			monServ = append(monServ, name)
+		}
+	} else {
+		monServ = strings.Split(serv, ",")
+	}
+
+	for i := 0; i < len(monServ); i++ {
+		svcDesc, _, err := cat.Service(monServ[i], "", nil)
 		if err != nil {
 			printNagiosOut(err.Error(), CODE_UNKNOWN)
 		}
 		if len(svcDesc) <= warningLimit {
 			exitCode = CODE_WARNING
-			if len(svcDesc) <= criticalLimit {
-				exitCode = CODE_CRITICAL
-			}
+		}
+		if len(svcDesc) <= criticalLimit {
+			exitCode = CODE_CRITICAL
 		}
 
-		s += fmt.Sprintf("%s=%d ", name, len(svcDesc))
+		s += fmt.Sprintf("%s=%d ", monServ[i], len(svcDesc))
 	}
 	printNagiosOut(s, exitCode)
 }

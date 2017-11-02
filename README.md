@@ -4,7 +4,19 @@ Nagios/Icinga plugin checks consul alive services
 
 ## Usage:
 ```bash
+./check_consul_service
+```
+
+```bash
+./check_consul_service -consul-addr 127.0.0.1:8500 -user consul-user -password consul-pass
+```
+
+```bash
 ./check_consul_service -consul-addr 127.0.0.1:8500 -w 1 -c 0
+```
+
+```bash
+./check_consul_service -consul-addr 127.0.0.1:8500 -w 1 -c 0 -services consul,nomad
 ```
 
 ## Icinga configuration
