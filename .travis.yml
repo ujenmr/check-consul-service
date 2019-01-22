@@ -10,5 +10,6 @@ deploy:
   api_key:
     secure: OXjioxVvsw+dAe4t1+UDhjMc6KIbxNql8+b0nYbfVRh/hdgJjwmjjmsrJAAPhBSiYmuG0PKY2bDQ3stLVd1WHEgSlxrpIO5ycalvh5yURK+RtSqKOjeenHqwHVoh0Ob/fUtGe/orHNn8tfX06Jztokyusp07fze6Axas8IXHsOFchOm5PU69Kx4NEAhgwKu9PlTVBy5/IvCUvsb3XLktk5eGEynutu2pBUqDIpO1zR55oydwOqlQ8M1J/ToVUgZVPGCiK2fXMiZ9FSGGZXz6bYD2TZDAtNk9dDkgSnvHA4Rdggy02SjwrewUmgO3PNHU7R+hAE/nf6Nf1eOMB/7r8JB5SVQeL4o5BbBLXuq1PlUBaPAjTQiL1U1lpbLi0QUIZbldXahugmBPlrBayfNiRr5YGtZ62TcBZfnsipXvn0rWP8b/aeWBcJpFTISnoltuVsdJE6rKIo+RKk2ad2kiGOhnmbqiULlfkOuA1w1JQWhQVexKMA1ajoUWidSGaD8BNKvhM2M/eq/dapA+enHeLmp3PErLY1AhlAiSSlz1ow569p8h35dVAdPoa08xziPUvZaseVs7QOyB2JGc+91ZIS4R57intfgcsvfvScFKRb/f2qDVjF9O5Alw7Cr7VNmdRG7OnQqEXt/nwpirym3JdcbS5KFijfAq65/+DdafJq8=
   file: bin/check_consul_service
+  skip_cleanup: true
   on:
-    repo: ujenmr/check-consul-service
+    tags: true
