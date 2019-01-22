@@ -51,7 +51,7 @@ var warningLimit int
 var criticalLimit int
 var serv string
 
-func printNagiosOut(msg string, code int) {
+func PrintNagiosOut(msg string, code int) {
 
 	/*
 
@@ -69,15 +69,15 @@ func printNagiosOut(msg string, code int) {
 	*/
 
 	if code == CODE_OK {
-		fmt.Printf("CONSUL-SERVICE OK: %s", msg)
+		fmt.Printf("CONSUL-SERVICE OK: %s| %s", msg, msg)
 	}
 
 	if code == CODE_WARNING {
-		fmt.Printf("CONSUL-SERVICE WARNING: %s", msg)
+		fmt.Printf("CONSUL-SERVICE WARNING: %s| %s", msg, msg)
 	}
 
 	if code == CODE_CRITICAL {
-		fmt.Printf("CONSUL-SERVICE CRITICAL: %s", msg)
+		fmt.Printf("CONSUL-SERVICE CRITICAL: %s| %s", msg, msg)
 	}
 
 	if code == CODE_UNKNOWN {
@@ -97,7 +97,7 @@ func init() {
 	flag.StringVar(&serv, "services", "", "Monitor services")
 	flag.Parse()
 	if warningLimit < criticalLimit {
-		printNagiosOut("Warning value must be less then critical", CODE_UNKNOWN)
+		PrintNagiosOut("Warning value must be less then critical", CODE_UNKNOWN)
 	}
 }
 
@@ -112,14 +112,14 @@ func main() {
 	}
 	cli, err := api.NewClient(cfg)
 	if err != nil {
-		printNagiosOut(err.Error(), CODE_UNKNOWN)
+		PrintNagiosOut(err.Error(), CODE_UNKNOWN)
 	}
 
 	cat := cli.Catalog()
 	catServ, _, err := cat.Services(nil)
 
 	if err != nil {
-		printNagiosOut(err.Error(), CODE_UNKNOWN)
+		PrintNagiosOut(err.Error(), CODE_UNKNOWN)
 	}
 
 	var s string
@@ -137,7 +137,7 @@ func main() {
 	for i := 0; i < len(monServ); i++ {
 		svcDesc, _, err := cat.Service(monServ[i], "", nil)
 		if err != nil {
-			printNagiosOut(err.Error(), CODE_UNKNOWN)
+			PrintNagiosOut(err.Error(), CODE_UNKNOWN)
 		}
 		if len(svcDesc) <= warningLimit {
 			exitCode = CODE_WARNING
@@ -148,5 +148,5 @@ func main() {
 
 		s += fmt.Sprintf("%s=%d ", monServ[i], len(svcDesc))
 	}
-	printNagiosOut(s, exitCode)
+	PrintNagiosOut(s, exitCode)
 }
